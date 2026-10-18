@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageReference Include="A2A" Version="1.0.0-preview2" />
     <PackageReference Include="A2A.AspNetCore" Version="1.0.0-preview2" />
+    <PackageReference Include="OllamaSharp" Version="5.5.0" />
   </ItemGroup>
 
 </Project>
