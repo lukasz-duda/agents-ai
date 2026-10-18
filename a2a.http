@@ -3,8 +3,8 @@
 ### Agent card
 GET {{url}}/.well-known/agent-card.json
 
-### A2A - echo
-POST {{url}}/echo
+### A2A - cat weight
+POST {{url}}/cat-weight
 Content-Type: application/json
 
 {
@@ -17,7 +17,7 @@ Content-Type: application/json
       "role": "ROLE_USER",
       "parts": [
         {
-          "text": "abc-123"
+          "text": "I have 3 leopards and 5 European cats. How many of them can fit in a vehicle with a 100 kg payload capacity?"
         }
       ]
     }

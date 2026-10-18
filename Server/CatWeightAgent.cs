@@ -66,10 +66,24 @@ public class CatWeightAgent(IChatClient chatClient) : IAgentHandler
     {
         var responder = new MessageResponder(eventQueue, context.ContextId);
 
-        List<ChatMessage> history = [];
-        history.Add(new ChatMessage(ChatRole.User, context.UserText));
-        var response = await chatClient.GetResponseAsync(history, cancellationToken: cancellationToken);
+        List<ChatMessage> history =
+        [
+            new ChatMessage(ChatRole.System, Prompts.ReasonAndAct),
+            new ChatMessage(ChatRole.User, context.UserText)
+        ];
 
-        await responder.ReplyAsync($"{response.Text}", cancellationToken);
+        List<ChatResponseUpdate> updates = [];
+
+        await foreach (ChatResponseUpdate update in
+            chatClient.GetStreamingResponseAsync(
+                history,
+                new ChatOptions { },
+                cancellationToken))
+        {
+            Console.Write(update.Text);
+        }
+
+        history.AddMessages(updates);
+        await responder.ReplyAsync($"ok", cancellationToken);
     }
 }
