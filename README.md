@@ -15,10 +15,16 @@ Start Ollama:
 docker compose up -d
 ```
 
-Pull model:
+Pull models:
 
 ```bash
-docker exec -it ollama ollama pull llama3.2:3b
+docker exec -it ollama ollama pull gemma4:e4b
+```
+
+Test prompts:
+
+```bash
+dotnet test
 ```
 
 Start server:

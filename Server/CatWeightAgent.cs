@@ -2,6 +2,7 @@ using A2A;
 using A2A.AspNetCore;
 using Microsoft.Extensions.AI;
 using OllamaSharp;
+using Prompts;
 
 
 namespace Server;
@@ -12,12 +13,13 @@ public static class CatWeightAgentSetup
 {
     public static IServiceCollection AddCatWeightAgent(this IServiceCollection services)
     {
+        services.AddSingleton<PromptLibrary>();
         services.AddSingleton<IChatClient>(sp =>
         {
             var uri = new Uri("http://localhost:11434");
             var client = new OllamaApiClient(uri)
             {
-                SelectedModel = "llama3.2:3b"
+                SelectedModel = "gemma4:e4b"
             };
             return client;
         });
@@ -37,7 +39,9 @@ public static class CatWeightAgentSetup
     }
 }
 
-public class CatWeightAgent(IChatClient chatClient) : IAgentHandler
+#pragma warning disable CS9113 // Parameter is unread.
+public class CatWeightAgent(PromptLibrary prompt) : IAgentHandler
+#pragma warning restore CS9113 // Parameter is unread.
 {
     public static AgentCard Card(string url) => new()
     {
@@ -66,24 +70,8 @@ public class CatWeightAgent(IChatClient chatClient) : IAgentHandler
     {
         var responder = new MessageResponder(eventQueue, context.ContextId);
 
-        List<ChatMessage> history =
-        [
-            new ChatMessage(ChatRole.System, Prompts.ReasonAndAct),
-            new ChatMessage(ChatRole.User, context.UserText)
-        ];
+        //string response = await prompt.SayHello(cancellationToken);
 
-        List<ChatResponseUpdate> updates = [];
-
-        await foreach (ChatResponseUpdate update in
-            chatClient.GetStreamingResponseAsync(
-                history,
-                new ChatOptions { },
-                cancellationToken))
-        {
-            Console.Write(update.Text);
-        }
-
-        history.AddMessages(updates);
-        await responder.ReplyAsync($"ok", cancellationToken);
+        await responder.ReplyAsync("ok", cancellationToken);
     }
 }
