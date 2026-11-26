@@ -31,7 +31,7 @@ public class CatWeightCalculatorTests
     }
 
     [Fact]
-    public async Task ReturnsPlannedSteps()
+    public async Task CreatePlan_ReturnsPlannedSteps()
     {
         Plan? plan = await _sut.CreatePlan("I have 3 leopards and 5 European cats. How many of them can fit in a vehicle with a 100 kg payload capacity?");
         Assert.NotNull(plan);
@@ -39,5 +39,13 @@ public class CatWeightCalculatorTests
         var firstAction = plan.Actions[0];
         Assert.NotEmpty(firstAction.Name);
         Assert.NotEmpty(firstAction.Comment);
+    }
+
+    [Fact]
+    public async Task ExecuteAction_ReturnsResult()
+    {
+        Action action = new("get_avg_weight", "Get average weight of leopard");
+        string result = await _sut.ExecuteAction(action);
+        Assert.Contains("50", result);
     }
 }
