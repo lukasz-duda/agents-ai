@@ -13,15 +13,22 @@ public static class CatWeightAgentSetup
 {
     public static IServiceCollection AddCatWeightAgent(this IServiceCollection services)
     {
-        services.AddSingleton<CatWeightCalculator>();
-        services.AddSingleton<IChatClient>(sp =>
+        services.AddSingleton<ICatWeightCalculator, CatWeightCalculator>();
+        services.AddSingleton(serviceProvider =>
         {
             var uri = new Uri("http://localhost:11434");
             var client = new OllamaApiClient(uri)
             {
                 SelectedModel = "gemma4:e4b"
             };
-            return client;
+
+
+            IChatClient chatClient = client;
+
+            return chatClient
+                .AsBuilder()
+                .UseFunctionInvocation()
+                .Build(); ;
         });
 
         services.AddA2AAgent<CatWeightAgent>(CatWeightAgent.Card("http://localhost:5000/cat-weight"));
@@ -40,7 +47,7 @@ public static class CatWeightAgentSetup
 }
 
 #pragma warning disable CS9113 // Parameter is unread.
-public class CatWeightAgent(CatWeightCalculator prompt) : IAgentHandler
+public class CatWeightAgent(ICatWeightCalculator catWeightCalculator) : IAgentHandler
 #pragma warning restore CS9113 // Parameter is unread.
 {
     public static AgentCard Card(string url) => new()
@@ -70,7 +77,14 @@ public class CatWeightAgent(CatWeightCalculator prompt) : IAgentHandler
     {
         var responder = new MessageResponder(eventQueue, context.ContextId);
 
-        //string response = await prompt.SayHello(cancellationToken);
+        if (context.UserText != null)
+        {
+            Plan? plan = await catWeightCalculator.CreatePlan(context.UserText, cancellationToken);
+            foreach (CatWeight.Action action in plan?.Actions ?? [])
+            {
+                string result = await catWeightCalculator.ExecuteAction(action, cancellationToken);
+            }
+        }
 
         await responder.ReplyAsync("ok", cancellationToken);
     }

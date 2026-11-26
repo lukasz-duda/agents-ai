@@ -22,4 +22,4 @@ services:
       - --flow-detail
       - "4"
     ports:
-      - 11435:8080
+      - 11434:8080

@@ -9,7 +9,7 @@ public static class ChatClientFactory
     {
         var httpClient = new HttpClient
         {
-            BaseAddress = new Uri("http://localhost:11435"),
+            BaseAddress = new Uri("http://localhost:11434"),
             Timeout = TimeSpan.FromMinutes(10)
         };
 
