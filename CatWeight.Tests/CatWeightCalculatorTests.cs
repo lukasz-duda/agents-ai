@@ -1,17 +1,16 @@
 using Microsoft.Extensions.AI;
-using OllamaSharp;
 
-namespace Prompts.Tests;
+namespace CatWeight.Tests;
 
-public class PromptLibraryTests
+public class CatWeightCalculatorTests
 {
     private IChatClient _chatClient;
-    private PromptLibrary _sut;
+    private CatWeightCalculator _sut;
 
-    public PromptLibraryTests()
+    public CatWeightCalculatorTests()
     {
         _chatClient = ChatClientFactory.CreateChatClient();
-        _sut = new PromptLibrary(_chatClient);
+        _sut = new CatWeightCalculator(_chatClient);
     }
 
     [Fact]

@@ -1,7 +1,7 @@
 using Microsoft.Extensions.AI;
 using OllamaSharp;
 
-namespace Prompts.Tests;
+namespace CatWeight.Tests;
 
 public static class ChatClientFactory
 {

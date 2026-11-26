@@ -1,6 +1,6 @@
 using System.ComponentModel;
 
-namespace Prompts;
+namespace CatWeight;
 
 public static class CatAverageWeight
 {

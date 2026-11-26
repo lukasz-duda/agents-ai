@@ -1,8 +1,8 @@
 using Microsoft.Extensions.AI;
 
-namespace Prompts;
+namespace CatWeight;
 
-public class PromptLibrary(IChatClient chatClient)
+public class CatWeightCalculator(IChatClient chatClient)
 {
     public async Task<string> SayHello(CancellationToken cancellationToken = default)
     {

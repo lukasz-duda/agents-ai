@@ -2,7 +2,7 @@ using A2A;
 using A2A.AspNetCore;
 using Microsoft.Extensions.AI;
 using OllamaSharp;
-using Prompts;
+using CatWeight;
 
 
 namespace Server;
@@ -13,7 +13,7 @@ public static class CatWeightAgentSetup
 {
     public static IServiceCollection AddCatWeightAgent(this IServiceCollection services)
     {
-        services.AddSingleton<PromptLibrary>();
+        services.AddSingleton<CatWeightCalculator>();
         services.AddSingleton<IChatClient>(sp =>
         {
             var uri = new Uri("http://localhost:11434");
@@ -40,7 +40,7 @@ public static class CatWeightAgentSetup
 }
 
 #pragma warning disable CS9113 // Parameter is unread.
-public class CatWeightAgent(PromptLibrary prompt) : IAgentHandler
+public class CatWeightAgent(CatWeightCalculator prompt) : IAgentHandler
 #pragma warning restore CS9113 // Parameter is unread.
 {
     public static AgentCard Card(string url) => new()

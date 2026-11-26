@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Prompts\Prompts.csproj" />
+    <ProjectReference Include="..\CatWeight\CatWeight.csproj" />
   </ItemGroup>
 
 </Project>

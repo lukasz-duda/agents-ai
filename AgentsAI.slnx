@@ -1,6 +1,6 @@
 <Solution>
+  <Project Path="CatWeight.Tests/CatWeight.Tests.csproj" />
+  <Project Path="CatWeight/CatWeight.csproj" />
   <Project Path="Client/Client.csproj" />
   <Project Path="Server/Server.csproj" />
-  <Project Path="Prompts.Tests/Prompts.Tests.csproj" />
-  <Project Path="Prompts/Prompts.csproj" />
 </Solution>
